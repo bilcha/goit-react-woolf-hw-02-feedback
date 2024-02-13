@@ -1,30 +1,30 @@
 import { Component } from 'react';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
-import Statistics from './Statistics/Statistics';
-let totalCount = 0;
-let positivePercentage = 0;
+import { Statistics } from './Statistics/Statistics';
+
 class App extends Component {
   state = {
     good: 0,
     neutral: 0,
     bad: 0,
   };
-  onLeaveFeedback = e => {
+  onLeaveFeedback = val => {
     this.setState(prev => {
-      this.countPositiveFeedbackPercentage(
-        e.target.name === 'good' ? prev.good + 1 : prev.good
-      );
-      return { [e.target.name]: prev[e.target.name] + 1 };
+      return { [val]: prev[val] + 1 };
     });
-    this.countTotalFeedback();
   };
   countTotalFeedback = () => {
-    totalCount += 1;
+    const totalVal = Object.values(this.state).reduce((ac, el) => {
+      return ac + el;
+    }, 0);
+    return totalVal;
   };
-  countPositiveFeedbackPercentage = goodCount => {
-    positivePercentage = ((goodCount / totalCount) * 100).toFixed();
+  countPositiveFeedbackPercentage = total => {
+    return ((this.state.good / total) * 100).toFixed();
   };
   render() {
+    let totalCount = this.countTotalFeedback();
+    let positivePercentage = this.countPositiveFeedbackPercentage(totalCount);
     return (
       <div
         style={{
@@ -34,6 +34,7 @@ class App extends Component {
       >
         <FeedbackOptions
           onLeaveFeedback={this.onLeaveFeedback}
+          options={Object.keys(this.state)}
           title="Please leave feedback"
         />
 
