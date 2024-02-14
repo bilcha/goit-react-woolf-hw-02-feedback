@@ -1,9 +1,8 @@
-import { Section } from 'components/Section/Section';
 import style from './FeedbackOptions.module.css';
 
-export const FeedbackOptions = ({ title, options, onLeaveFeedback }) => {
+export const FeedbackOptions = ({ options, onLeaveFeedback, children }) => {
   return (
-    <Section title={title}>
+    <>
       {options.map(item => (
         <button
           key={item}
@@ -14,6 +13,6 @@ export const FeedbackOptions = ({ title, options, onLeaveFeedback }) => {
           {item.charAt(0).toUpperCase() + item.slice(1)}
         </button>
       ))}
-    </Section>
+    </>
   );
 };
